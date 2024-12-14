@@ -18,7 +18,7 @@ A powerfull tool to extract all parameters from html source codes...
 
 # done
 ```
-| Note: change python version to your system's python version
+`Note`: change python version to your system's python version -> `!#/path/to/python/`
 
 ### Usage
 ```bash
