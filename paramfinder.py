@@ -21,6 +21,7 @@ if __name__ == "__main__":
     if req.status_code == 200:
         response = req.text
 
+        # IF input source code is not {JavaScript}
         if not args.js:
             # HTML attributes
             if not args.silent:
@@ -36,5 +37,17 @@ if __name__ == "__main__":
             if not args.silent:
                 print("\n[+] Extracting JSON Objects...\n")
             extract_objects(response)
+        
+        # IF input source code is {JavaScript}
+        elif args.js:
+            # Variables
+            if not args.silent:
+                print("\n[+] Extracting JavaScript Variables...\n")
+            extract_variables(response, "js")
+            
+            # Objects
+            if not args.silent:
+                print("\n[+] Extracting JSON Objects...\n")
+            extract_objects(response, "js")
     else:
         print(f"Error: code {req.status_code}")
