@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 # Define Args
 parser = argparse.ArgumentParser(description="Find All Parameters in a Web Page :)")
 parser.add_argument("-u", dest="url", required=True, help="define a target url")
+parser.add_argument("-silent", required=False, help="run this tool in silent mode", action="store_true")
 args = parser.parse_args()
 
 
@@ -55,6 +56,8 @@ if __name__ == "__main__":
         response = req.text
     
         # HTML attributes
+        if not args.silent:
+            print("\n[+] Extracting HTML Attributes...\n")
         for value in extract_attrs(response):
             print(value)
         
@@ -64,12 +67,16 @@ if __name__ == "__main__":
         js_vars = parsed_js[0]
         json_objs = parsed_js[1]
         # Variables
+        if not args.silent:
+            print("\n[+] Extracting JavaScript Variables...\n")
         for index in js_vars:
             for var in index:
                 if var not in ["var", "let", "const", ""]:
                     clean_var = var.replace(",", "").replace(" ", "")
                     print(clean_var)
         # Objects
+        if not args.silent:
+            print("\n[+] Extracting JSON Objects...\n")
         for index in json_objs:
             clean_obj = index.replace(" ", "").replace("'", "").replace("\"", "").split("\n")
             for key_value in clean_obj:
