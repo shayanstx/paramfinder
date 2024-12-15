@@ -59,9 +59,10 @@ if __name__ == "__main__":
         if not args.silent:
             print("\n[+] Extracting HTML Attributes...\n")
         for value in extract_attrs(response):
-            print(value)
+            if len(value) > 0:
+                print(value)
         
-        # JavaScript variables
+        # JavaScript variables & Objects
         parsed_js = extract_vars(response)
 
         js_vars = parsed_js[0]
@@ -73,7 +74,8 @@ if __name__ == "__main__":
             for var in index:
                 if var not in ["var", "let", "const", ""]:
                     clean_var = var.replace(",", "").replace(" ", "")
-                    print(clean_var)
+                    if len(clean_var) > 0:
+                        print(clean_var)
         # Objects
         if not args.silent:
             print("\n[+] Extracting JSON Objects...\n")
@@ -84,6 +86,7 @@ if __name__ == "__main__":
                     key = key_value.split(":")[0]
                     special_chars = ["=", "{", "}", "[", "]", ".", ";", "/", "\\", "(", ")", "|", "?", "<", ">", "$"]
                     if not any(char in key for char in special_chars):
-                        print(key)
+                        if len(key) > 0:
+                            print(key)
     else:
         print(f"Error: code {req.status_code}")
