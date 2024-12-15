@@ -1,7 +1,9 @@
 # This script parses source codes as HTML or JavaScript input
+import re
 from bs4 import BeautifulSoup
 
 
+# --------------------------
 # Extract name, id from HTML
 def extract_attrs(source):
     soup = BeautifulSoup(source, "html.parser")
@@ -13,12 +15,10 @@ def extract_attrs(source):
             if attr in tag.attrs:
                 values = tag[attr]
                 params.add(values)
-    
     # Cleaning
     for value in params:
         if len(value) > 0:
             print(value)
-
 
 # Parse JS variables from HTML
 def parse_js(source):
@@ -42,10 +42,13 @@ def parse_js(source):
             json_objects.update(json_matches)
     return js_variables, json_objects
 
-
 # Extract JS variables from HTML
-def extract_variables(source):
-    parsed_variables = parse_js(source)[0]
+def extract_variables(source, lang="html"):
+    if lang == "js":
+        parsed_variables = parse_extract_js_code(source)[0]
+    else:
+        parsed_variables = parse_js(source)[0]
+    
     
     # Cleaning
     for index in parsed_variables:
@@ -54,11 +57,13 @@ def extract_variables(source):
                 clean_var = var.replace(",", "").replace(" ", "")
                 if len(clean_var) > 0:
                     print(clean_var)
-                    
 
 # Extract JSON objects from HTML
-def extract_objects(source):
-    parsed_objects = parse_js(source)[1]
+def extract_objects(source, lang="html"):
+    if lang == "js":
+        parsed_objects = parse_extract_js_code(source)[1]
+    else:
+        parsed_objects = parse_js(source)[1]
     
     # Cleaning
     for index in parsed_objects:
@@ -70,3 +75,19 @@ def extract_objects(source):
                 if not any(char in key for char in special_chars):
                     if len(key) > 0:
                         print(key)
+
+# ----------------------------------------------
+# Parse & Extract JavaScript Variables & Objects
+def parse_extract_js_code(source):
+    js_variables = set()
+    json_objects = set()
+    
+    # Find JS variables
+    var_matches = re.findall(r"(var|let|const)\s+(\w+)\s*(,\s*(\w+))*\s*=", source)
+    js_variables.update(var_matches)
+    
+    # Find JSON objects
+    json_matches = re.findall(r"{.*?:.*?}", source, re.DOTALL)
+    json_objects.update(json_matches)
+    
+    return js_variables, json_objects
