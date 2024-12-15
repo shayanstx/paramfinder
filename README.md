@@ -22,7 +22,11 @@ A powerfull tool to extract all parameters from html source codes...
 
 ### Usage
 ```bash
+# simple-usage
 ~$ paramfinder -u https://target.com
+
+# javascript-url
+~$ paramfinder -u https://target.com/script.js -js
 ```
 
 Happy Hacking :D
