@@ -18,7 +18,7 @@ A powerfull tool to extract all parameters from html source codes...
 
 # done
 ```
-| Warning: change python version in first line (paramfinder.py) to your system's python version -> `!#/path/to/python/`
+| `Warning`: change python version in first line (paramfinder.py) to your system's python version -> `!#/path/to/python/`
 
 ### Usage
 ```bash
